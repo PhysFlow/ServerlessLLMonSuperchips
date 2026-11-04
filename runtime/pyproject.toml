@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "memserve-runtime"
+version = "0.1.0"
+description = "Per-model online ratio control for SGLang HybridGEMM"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+dependencies = ["torch>=2.0", "nvidia-ml-py>=12"]
+
+[dependency-groups]
+test = ["numpy>=1.24"]
+
+[tool.setuptools]
+packages = ["memserve_runtime"]
+package-dir = { "memserve_runtime" = "." }

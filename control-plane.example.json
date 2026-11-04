@@ -1,0 +1,19 @@
+{
+  "gateway": {
+    "port": 8100
+  },
+  "models": [
+    {
+      "model_id": "tinyllama",
+      "model_path": "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+    },
+    {
+      "model_id": "qwen3b",
+      "model_path": "Qwen/Qwen2.5-3B-Instruct"
+    },
+    {
+      "model_id": "qwen1.5b",
+      "model_path": "Qwen/Qwen2.5-1.5B-Instruct"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+[project]
+name = "memserve"
+version = "0.1.0"
+description = "MemServe system environment"
+requires-python = "==3.10.*"
+license = "Apache-2.0"
+dependencies = [
+    "memserve-runtime",
+    "memserve-control-plane",
+    "torch==2.11.0",
+    "setuptools>=77",
+    "wheel",
+    "pybind11",
+    "ninja",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.16.9",
+    "transformers>=4.40",
+]
+
+[tool.uv]
+package = false
+default-groups = []
+
+[tool.uv.sources]
+memserve-runtime = { workspace = true }
+memserve-control-plane = { workspace = true }
+
+[tool.uv.workspace]
+members = ["runtime", "control_plane"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

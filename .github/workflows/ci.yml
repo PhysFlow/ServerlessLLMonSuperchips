@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v9.0.0
+
+      - name: Check lockfile
+        run: uv lock --check
+
+      - name: Run Ruff
+        run: uvx ruff check runtime control_plane
+
+  runtime-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v9.0.0
+        with:
+          python-version: "3.10"
+
+      - name: Install Runtime
+        run: >
+          uv sync
+          --package memserve-runtime
+          --group test
+          --no-default-groups
+          --locked
+
+      - name: Run Runtime tests
+        run: >
+          uv run --no-sync python -m unittest discover
+          -s runtime/tests
+          -p "test_*.py"
+          -v
+
+  control-plane-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v9.0.0
+        with:
+          python-version: "3.10"
+
+      - name: Install Control Plane
+        run: >
+          uv sync
+          --package memserve-control-plane
+          --group test
+          --no-default-groups
+          --locked
+
+      - name: Run Control Plane tests
+        run: uv run --no-sync python -m pytest -q control_plane/tests
+
+  runtime-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v9.0.0
+        with:
+          python-version: "3.10"
+
+      - name: Build Runtime wheel
+        run: uv build --package memserve-runtime --wheel --out-dir dist/runtime
+
+      - name: Upload Runtime wheel
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: memserve-runtime-wheel
+          path: dist/runtime/*.whl
+          if-no-files-found: error
