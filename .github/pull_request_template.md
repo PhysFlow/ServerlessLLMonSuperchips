@@ -8,8 +8,6 @@
 
 ### Runtime
 
-### Hybridgemm
-
 ### End to End
 
 ## Public API Changes

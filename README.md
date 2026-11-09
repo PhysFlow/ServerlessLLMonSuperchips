@@ -4,7 +4,7 @@ MemServe serves multiple models across NVIDIA MIG instances using CPU-resident w
 
 ## News
 
-- [2026/10] Initial release of MemServe.
+- [2026/11] Initial release of MemServe.
 
 ## Key Features
 
@@ -100,6 +100,10 @@ Measured on the same GH200 2g.24gb MIG instances, serving Qwen2.5 3B, 7B and 14B
 - For models that fit in HBM, MemServe starts within 8% of standard SGLang. Loading the weights takes about as long, 1.9 vs 2.2 s for 3B and 4.9 vs 4.7 s for 7B: MemServe pins them in CPU memory instead of copying them into HBM.
 - Steps that read the weights over the host link stay short on NVLink-C2C: capturing CUDA graphs takes 2.1 to 3.3 s and the first request 0.6 to 1.1 s.
 
+## Availability
+
+Running MemServe end to end requires the customized SGLang (PhysFlow/sglang) and the HybridGEMM kernel. Neither is public yet. Until they are released, you can install this repository with uv sync and run the control plane tests; serving requests and the runtime tests need both.
+
 ## Requirements
 
 - Linux with an NVIDIA Hopper GPU (SM90) and at least one available MIG instance, tested on H800 PCIe (x86_64) and GH200 (aarch64)
@@ -108,7 +112,7 @@ Measured on the same GH200 2g.24gb MIG instances, serving Qwen2.5 3B, 7B and 14B
 
 ## Install
 
-Clone MemServe and the matching SGLang revision into the same directory:
+Clone this repository and the matching SGLang revision into the same directory:
 
 ```bash
 git clone https://github.com/PhysFlow/ServerlessLLMonSuperchips.git
